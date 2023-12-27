@@ -1,10 +1,15 @@
-const sum = require("./service/Calservice");
+const logger = require("./service/Logger")
+const os = require('os')
+const path = require('path')
 
-main = () => {
-    console.log("\nRun..........\n\n",sum);
 
-    console.log("",sum.devide(8,2),"",sum.sum(2,2,2,2,2,2,2,2,2,2,2,2))
-    console.log("file name :- ",__filename);
+const main = () => {
+    
+    console.log("\nRun..........\n\n",logger);
+ 
+    console.log(logger.write("Day and Time : "));
+    
+    logger.read();
 
     console.log("\nEnd............")
 
