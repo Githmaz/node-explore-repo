@@ -1,11 +1,12 @@
 const db = require('../config/dbconfig')
+const studnetRepository = require('../repository/studnetRepository');
+const { studentResponse } = require('../utils/studentResponseUtil');
 
  //------------------- Get all students -------------------//
 
     const getAllStudents = async () => {
         try {
-            const [rows] = await db.query('SELECT id, first_name, last_name, age, email, phone_number FROM student WHERE deleted_at IS NULL');
-            return rows;
+            return await studnetRepository.getAllStudents();
         } catch (error) {
             console.error('Error :', error);
             throw new Error('Internal Server Error');
@@ -14,9 +15,9 @@ const db = require('../config/dbconfig')
 
  //------------------ Add a new student ------------------//
 
-    const addStudnet = async({first_name,last_name,age,email,phone_number})=>{
+    const addStudnet = async({first_name,last_name,age,email,phone_number})=>{ // u can use DTO for this 
         try {
-            const [result] = await db.query('INSERT INTO student (first_name, last_name, age, email, phone_number) VALUES (?, ?, ?, ?, ?)', [first_name, last_name, age, email, phone_number]);
+            const result = await studnetRepository.addStudnet({first_name,last_name,age,email,phone_number});// u can use DAO for this if u want 
             return {
                 Message : "Student Added succesufuly",
                 studentId : result.insertId,
@@ -32,7 +33,7 @@ const db = require('../config/dbconfig')
 
     const deleteStudent = async(studentId)=>{
         try {
-            const [result] = await db.query('UPDATE student SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?',[studentId]);
+            const result = await studnetRepository.deleteStudent(studentId);
             if (result.affectedRows === 0) {
                 return { message: `Student with ID:${studentId.replace(/\n/g, '')} not found`, success: false };
             }
@@ -47,7 +48,7 @@ const db = require('../config/dbconfig')
 
     const deleteStudentPermanently = async (studentId) =>{
         try {
-            const [result] = await db.query('DELETE FROM student WHERE id = ?', [studentId]);
+            const result = await studnetRepository.deleteStudentPermanently(studentId);
             if (result.affectedRows === 0) {
                 return { message: `Student with ID:${studentId.replace(/\n/g, '')} not found`, success: false };
             }
@@ -62,7 +63,7 @@ const db = require('../config/dbconfig')
 
     const restoreStudent = async (studentId) => {
         try {
-        const [result] = await db.query('UPDATE student SET deleted_at = NULL WHERE id = ?', [studentId]);
+        const result = await studnetRepository.restoreStudent(studentId);
     
         if (result.affectedRows === 0) {
             return { message: `Student with ID:${studentId.replace(/\n/g, '')} not found`, success: false };
@@ -79,12 +80,10 @@ const db = require('../config/dbconfig')
 
     const updateStudent = async (studentId, updatedFields) => {
         try {
-        const [result] = await db.query('UPDATE student SET ? WHERE id = ? AND deleted_at IS NULL', [updatedFields, studentId]);
-    
+        const result = await studnetRepository.updateStudent(studentId,updatedFields);
         if (result.affectedRows === 0) {
             return { message: `Student with ID:${studentId.replace(/\n/g, '')} not found`, success: false };
         }
-    
         return { message: `Student with ID:${studentId.replace(/\n/g, '')} updated successfully`, success: true };
         } catch (error) {
         console.error('Error:', error);
