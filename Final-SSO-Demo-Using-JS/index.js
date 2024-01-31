@@ -1,23 +1,32 @@
 const express = require("express");
 const cors = require('cors');
-const bodyparser = require('body-parser')
-const rootRouter = require('./src/routes/rootRouter')
-const app = express();
-const port = 4000;
+const bodyParser = require('body-parser');
 const session = require('express-session');
 const passport = require('passport');
+const rootRouter = require('./src/routes/rootRouter');
 
+const app = express();
+const port = 4000;
+
+// Middleware
 app.use(cors());
+app.use(bodyParser.json());
 
+// Configure express-session middleware
+app.use(session({
+    secret: 'aaaaaaa',
+    resave: false,
+    saveUninitialized: false
+}));
 
-app.use(bodyparser.json());
-
-app.use("/",rootRouter); 
-
-app.use(session({ secret: 'cats', resave: false, saveUninitialized: true }));
+// Initialize Passport middleware
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.listen(port,()=>{
-    console.log(`Application started on port : ${port} `)
-})
+// Router
+app.use("/", rootRouter); 
+
+// Start server
+app.listen(port, () => {
+    console.log(`Application started on port: ${port}`);
+});
