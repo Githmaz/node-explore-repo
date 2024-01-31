@@ -1,6 +1,4 @@
-const db = require('../config/dbconfig')
 const studnetRepository = require('../repository/studnetRepository');
-const { studentResponse } = require('../utils/studentResponseUtil');
 
  //------------------- Get all students -------------------//
 
