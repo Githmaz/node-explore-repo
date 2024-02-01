@@ -30,13 +30,21 @@ const callback = async (req, res, next) => {
 //------------------- log out  -------------------//
 const logout = async (req, res) => {
     let user = req.user;
-    
+
+    if (!user) {
+        return res.status(401).json({ 
+            success: false,
+            message: "You are already logged out",
+            error: "Unauthorized" 
+        });
+    }
+
     console.log(JSON.stringify({
         displayName: user.displayName,
         email: user.emails[0].value
     }));
 
-
+ 
     req.logout((err) => {
         if (err) {
             console.error('Error logging out:', err);
@@ -47,22 +55,25 @@ const logout = async (req, res) => {
                 console.error('Error destroying session:', err);
                 return res.status(500).send('Internal Server Error');
             }
-            res.send(`${JSON.stringify({
-                displayName: user.displayName,
-                email: user.emails[0].value
-            })} Goodbye !`);
+            return res.status(200).json({ 
+                success: true,
+                message: `Logout successful. Goodbye!`,
+                email: user.emails[0].value ,
+            });
         });
     });
 }
 
 //------------------- Get all students with Auth -------------------//
 
-const getAllStudents = async (req, res) => {
+const getUserData = async (req, res) => {
     try {
-        studentResponse.sendAllStudents(res, await studentAuthService.getAllStudents());
+        const userData = req.user;
+        res.send(userData)
+        // res.redirect('file:///Users/githmaz/Coding/GitHub/Node/node-explore-repo/Demo-with-SSO-and-MSSQL/Frontend/Dashboard.html#' + JSON.stringify(userData));
     } catch (error) {
         studentResponse.sendServerError(res);
     }
 }
 
-module.exports = { getAllStudents, login, homePage, callback, isLoggedIn, logout };
+module.exports = { getUserData, login, homePage, callback, isLoggedIn, logout };
