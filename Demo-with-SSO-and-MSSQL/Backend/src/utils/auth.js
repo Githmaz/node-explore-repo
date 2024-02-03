@@ -23,7 +23,5 @@ passport.deserializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  // Deserialize the user based on the user ID stored in the session
-  // For example, if you're using the user ID directly in the session:
   done(null, id);
 });
