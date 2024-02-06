@@ -1,11 +1,16 @@
 // const studentAuthService = require('../services/studentAuthService');
 const { studentResponse } = require('../utils/studentResponseUtil');
 const passport = require('passport');
-const db = require('../repository/userAuthRepository'); // Import your repository file
+const userRepo = require('../repository/userAuthRepository'); // Import your repository file
 require('../utils/auth');
 
 function isLoggedIn(req, res, next) {
     req.user ? next() : res.sendStatus(401);
+}
+
+//------------------- RepoTesting -------------------//
+const testRepo = async (req, res) => {
+    return res.send(await userRepo.getTableNames());
 }
 
 //------------------- Auth Homepage -------------------//
@@ -67,6 +72,7 @@ const logout = async (req, res) => {
 //------------------- Get all students with Auth -------------------//
 
 const getUserData = async (req, res) => {
+
     try {
         const userData = req.user;
         res.send(userData)
@@ -75,16 +81,6 @@ const getUserData = async (req, res) => {
     }
 }
 
-module.exports = { getUserData, login, homePage, callback, isLoggedIn, logout };
+module.exports = { getUserData, login, homePage, callback, isLoggedIn, logout , testRepo };
 
-// After successful login, save user data to the database
-passport.authenticate('google', { scope: ['email', 'profile'] })(req, res, async () => {
-    try {
-        const { displayName, emails } = req.user;
-        const email = emails[0].value;
-        await db.saveUserData(displayName, email);
-    } catch (error) {
-        console.error('Error saving user data:', error);
-        // Handle the error gracefully
-    }
-});
+

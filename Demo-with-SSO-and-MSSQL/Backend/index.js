@@ -5,6 +5,7 @@ const session = require('express-session');
 const passport = require('passport');
 const rootRouter = require('./src/routes/rootRouter');
 
+
 const app = express();
 const port = 4000;
 
@@ -24,7 +25,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Router
-app.use("/", rootRouter); 
+app.use("/", rootRouter);
 
 // Start server
 app.listen(port, () => {
