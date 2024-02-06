@@ -1,5 +1,5 @@
 // const studentAuthService = require('../services/studentAuthService');
-const { studentResponse } = require('../utils/studentResponseUtil');
+const { studentResponse: Response } = require('../utils/ResponseUtil');
 const passport = require('passport');
 const userRepo = require('../repository/userAuthRepository'); // Import your repository file
 require('../utils/auth');
@@ -77,7 +77,7 @@ const getUserData = async (req, res) => {
         const userData = req.user;
         res.send(userData)
     } catch (error) {
-        studentResponse.sendServerError(res);
+        Response.sendServerError(res);
     }
 }
 

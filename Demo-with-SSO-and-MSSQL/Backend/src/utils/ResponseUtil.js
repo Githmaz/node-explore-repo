@@ -1,5 +1,5 @@
-const studentResponse = {
-      
+const Response = {
+
     sendAllStudents:(res,students)=>{
         res.status(200).json({StudentList:students });
     },
@@ -15,11 +15,11 @@ const studentResponse = {
     sendNotFound: (res, message) => {
       res.status(404).json({ message, success: false });
     },
-  
+
     sendServerError: (res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     },
-    
+
   };
 
-  module.exports = { studentResponse };
+  module.exports = { Response };

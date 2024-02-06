@@ -1,8 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const studentAuthRouter = require("./api/studentAuthRouter")
+const studentAuthRouter = require("./api/userAuthRouter")
 
-router.use("/Student/Auth",studentAuthRouter) 
+router.use("/Student/Auth",studentAuthRouter)
 
 
 

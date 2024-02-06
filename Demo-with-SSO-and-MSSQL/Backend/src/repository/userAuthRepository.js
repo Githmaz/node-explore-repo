@@ -1,7 +1,5 @@
-// userAuthRepository.js
 const { sql, connect } = require('../server/db');
 
-// Use the sql object or call the connect function as needed
 
 
 // Function to get table names from the database

@@ -1,5 +1,5 @@
 const express = require("express");
-const studentAuthController = require('../../controller/studentAuthController');
+const studentAuthController = require('../../controller/userAuthController');
 const router = express.Router();
 
 router.get('/', studentAuthController.homePage);
